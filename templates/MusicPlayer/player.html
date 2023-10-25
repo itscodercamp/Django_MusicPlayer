@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+
+    <title>Sasta</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+      html {
+        box-sizing: border-box;
+      }
+       /* body {
+        margin: 0;
+        min-height: 100vh;
+        background: #c9ced3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Nunito, sans-serif;
+        font-size: 12px;
+      }  */
+      .bg-container {
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 100%;
+        height: 0.5%;
+        z-index: -1;
+      }
+      .bg-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        min-width: 140%;
+        min-height: 100%;
+        filter: blur(15px);
+        -webkit-filter: blur(50px);
+        transform: scale(1.1);
+      }
+      .player-container {
+        height: 355px;
+        width: 326.66px;
+        background: #0b174d;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px 5px rgba(0, 0, 0, 0.3);
+      }
+      .img-container {
+        width: 200px;
+        height: 170px;
+        position: relative;
+        top: -50px;
+        left: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .img-container img {
+        height: 170px;
+        width: 200px;
+        opacity: 0;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 5px 30px 5px rgba(0, 0, 0, 0.5);
+        transition: 0.5s;
+      }
+      .img-container img.active {
+        transition: 0.5s;
+        opacity: 1;
+        width: 100%;
+        height: 100%;
+      }
+      h2 {
+        font-size: 25px;
+        text-align: center;
+        margin: 0;
+        color: white;
+      }
+      h3 {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 400;
+        margin: 5px 0 0;
+      }
+      /* Progress */
+      .progress-container {
+        background: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 40px 20px;
+        height: 4px;
+        width: 85%;
+      }
+      .progress {
+        background: #ff0303;
+        border-radius: 5px;
+        height: 100%;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+      .duration-wrapper {
+        position: relative;
+        top: -25px;
+        display: flex;
+        justify-content: space-between;
+      }
+      /* Controls */
+      .player-controls {
+        position: relative;
+        top: -25px;
+        left: 90px;
+        width: 200px;
+      }
+      .fas {
+        font-size: 30px;
+        color: rgb(186, 183, 183);
+        margin-right: 30px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .fas:hover {
+        filter: brightness(80%);
+      }
+      .main-button {
+        font-size: 40px;
+        position: relative;
+        top: 3px;
+      }
+      /* Media Query: iPhone (Vertical) */
+      @media screen and (max-width: 376px) {
+        .player-container {
+          width: 95vw;
+        }
+        .img-container {
+          left: 29px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 15px;
+        }
+        .player-controls {
+          top: -10px;
+          left: 100px;
+          position: fixed;
+        }
+      }
+      
+      #title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* animation: slideText 8s linear infinite; */
+        }
+
+        @keyframes slideText {
+            0% {
+                transform: translateX(10%);
+            }
+            100% {
+                transform: translateX(-30%);
+            }
+        }
+    </style>
+  </head>
+
+  <body>
+    <!--     <h1 align="center">SabzLearn | jS Course</h1> -->
+
+    <div class="bg-container shadow-lg">
+      <img src="" alt="" id="background" />
+    </div>
+
+    <div class="player-container">
+      <!-- Song -->
+
+      <div class="img-container">
+        <img src="" alt="" id="cover" class="active" />
+      </div>
+<div class="contain" style="overflow: hidden;">
+      <h3 id="title"></h3>
+</div>
+
+      <h3 id="artist"></h3>
+
+      <audio src=""></audio>
+
+      <!-- Progress -->
+
+      <div class="progress-container text-white" id="progress-container">
+        <div class="progress" id="progress"></div>
+
+        <div class="duration-wrapper">
+          <span id="current-time"></span>
+
+          <span id="duration"></span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+
+      <div class="player-controls">
+        <i class="fas fa-backward" id="prev" title="Previous"></i>
+
+        <i class="fas fa-play main-button" id="play" title="Play"></i>
+
+        <i class="fas fa-forward" id="next" title="Next"></i>
+      </div>
+    </div>
+
+    <script>
+        let $ = document
+const image = $.getElementById("cover")
+
+const title = $.getElementById("title")
+
+const artist = $.getElementById("artist")
+
+const music = $.querySelector("audio")
+
+const currentTimeEl = $.getElementById("current-time")
+
+const durationEl = $.getElementById("duration")
+
+const progress = $.getElementById("progress")
+
+const progressContainer = $.getElementById("progress-container")
+
+const prevBtn = $.getElementById("prev")
+
+const playBtn = $.getElementById("play")
+
+const nextBtn = $.getElementById("next")
+
+const background = $.getElementById("background")
+
+// for another card
+const title1 = $.getElementById("title1")
+const image1 = $.getElementById("cover")
+const artist1 = $.getElementById("artist")
+
+const songs = [
+  
+//  {path:"https://dls.music-fa.com/tagdl/1401/Mohsen%20Ebrahimzade%20-%20Rafti%20(128).mp3",musicName:"Rafti",artist:"Mohsen EbrahimZade",cover:"https://music-fa.com/wp-content/uploads/2022/05/IMG_28052022_204907_450_x_450_pixel.jpg"},
+//  {path:"https://dls.music-fa.com/tagdl/1401/Ashvan%20-%20Ghasedak(320).mp3",musicName:"Ghasedak",artist:"Ashvan",cover:"https://music-fa.com/wp-content/uploads/2022/03/Ashvan-Music-fa.com_.jpg"},
+//  {path:"https://dls.music-fa.com/tagdl/1401/Sadegh%20Zeyn%20-%20Leila%20Leila%20(Demo).mp3",musicName:"Leila Leila",artist:"Sadegh Zeyn",cover:"https://music-fa.com/wp-content/uploads/2022/06/Serial-Jadogar-leila-Music-fa.com_.jpg"},
+//  {path:"https://dls.music-fa.com/tagdl/1401/%20Amir%20Radan%20-%20Begoo%20Hastam%20%28128%29.mp3",musicName:"Bego Hastam",artist:"Sadegh Zeyn",cover:"https://music-fa.com/wp-content/uploads/2022/06/Afshin-JahanDide-Shahe-Delam-Music-fa.com_-150x150.jpg"}
+ 
+  {% for song in Songs %}
+  {path:"{{song.audio.url}}",musicName:"{{song.Song_Title}}",artist:"{{song.artists}}",cover:"{{song.image.url}}"},
+  {% endfor %}
+
+  ]
+
+let isLoading = false
+
+function playSong(){
+  isLoading = true
+  playBtn.classList.replace("fa-play", "fa-pause");
+  playBtn.setAttribute("title", "Pause");
+  music.play()
+}
+
+function pauseSong(){
+  isLoading = false
+  playBtn.classList.replace("fa-pause", "fa-play");
+    playBtn.setAttribute("title", "Play");
+  music.pause()
+}
+
+
+function playToggle(){
+  if (isLoading) {
+    pauseSong()
+  } else {
+    playSong()
+  }
+}
+
+function loadSongs(song){
+  title.innerHTML = song.musicName
+  // title1.innerHTML = song.musicName
+  artist.innerHTML = song.artist
+  // artist1.innerHTML = song.artist
+  music.src = song.path
+  changeCover(song.cover)
+  updateNowPlayingInfo(song);
+}
+
+function changeCover(cover) {
+  image.classList.remove("active");
+  setTimeout(function(){
+    image.src = cover
+    image.classList.add("active");
+  },100)
+  background.src = cover
+}
+
+let songIndex = 0
+
+function prevSong(){
+  songIndex--
+  if(songIndex < 0) {
+    songIndex = 2
+  }
+  loadSongs(songs[songIndex])
+  playSong()
+}
+
+function nextSong(){
+  songIndex++
+  if(songIndex > songs.length - 1) {
+    songIndex = 0
+  }
+  loadSongs(songs[songIndex])
+  playSong()
+}
+
+loadSongs(songs[songIndex])
+
+
+function updateProgressBar(){
+  if(isLoading){
+    const duration = music.duration
+  let currentTime = music.currentTime
+  let progressPercent = (currentTime / duration) * 100
+  progress.style.width = progressPercent + "%"
+  const durationMinutes = Math.floor(duration / 60)
+  let durationSeconds = Math.floor(duration % 60)
+  if (durationSeconds < 10){
+    durationSeconds = "0" + durationSeconds
+  }
+  if (durationSeconds){
+    durationEl.innerHTML = durationMinutes + ":" + durationSeconds
+  }
+  const currentMinutes = Math.floor(currentTime / 60)
+  let currentSeconds = Math.floor(currentTime % 60)
+  if (currentSeconds < 10) {
+    currentSeconds = "0" + currentSeconds
+  }
+  currentTimeEl.innerHTML = currentMinutes + ":" + currentSeconds
+  }
+}
+
+function setProgressBar(e) {
+  const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = music.duration;
+    music.currentTime = (clickX / width) * duration;
+}
+
+playBtn.addEventListener("click",playToggle)
+prevBtn.addEventListener("click",prevSong)
+nextBtn.addEventListener("click",nextSong)
+music.addEventListener("ended", nextSong);
+music.addEventListener("timeupdate", updateProgressBar);
+progressContainer.addEventListener("click", setProgressBar);
+
+
+function updateNowPlayingInfo(song) {
+  console.log(song);  // Check if song data is correct
+  const titleElement = document.getElementById("now-playing-title");
+  const artistElement = document.getElementById("now-playing-artist");
+  const coverElement = document.getElementById("now-playing-cover");
+
+  titleElement.textContent = song.musicName;
+  artistElement.textContent = song.artist;
+  coverElement.src = song.cover;
+}
+
+// Get all song list items
+const songListItems = document.querySelectorAll(".list_songs");
+
+// Function to play a song when a list item is clicked
+function playSongOnClick(event) {
+  event.preventDefault(); // Prevent the anchor from navigating
+
+  const audioUrl = this.getAttribute("data-audio-url");
+  const title = this.getAttribute("data-title");
+  const artist = this.getAttribute("data-artist");
+  const cover = this.getAttribute("data-cover");
+
+  // Update the player with the new song details
+  loadSongs({
+    path: audioUrl,
+    musicName: title,
+    artist: artist,
+    cover: cover
+  });
+
+  // Play the selected song
+  playSong();
+}
+
+// Attach the click event listener to each song list item
+songListItems.forEach((item) => {
+  item.addEventListener("click", playSongOnClick);
+});
+
+    </script>
+   
+  </body>
+</html>

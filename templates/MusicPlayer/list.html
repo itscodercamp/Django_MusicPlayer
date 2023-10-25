@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Style for the song list */
+        .ul_list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .li_list {
+            margin: 10px 0;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            transition: background-color 0.2s;
+            height: 40px;
+            width: 250px;
+        }
+
+        .li_list:hover {
+            background-color: #f2f2f2;
+        }
+
+        .song-image {
+            height: 40px;
+            width: 50px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+
+        .song-details {
+            flex: 1;
+            width: 0; /* Add this line */
+            overflow: hidden;
+        }
+
+        .song-name {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .artist {
+            color: #666;
+        }
+
+        .play-icon {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+        .artist{
+            font-size: small;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .song-name{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+    <ul class="ul_list">
+
+        <li class="li_list">
+            <img src="https://source.unsplash.com/collection/190727/1600x1600/" alt="Song 1" class="song-image">
+            <div class="song-details">
+                <p class="song-name">Song 1 Hasnain Bhai</p>
+                <p class="artist">Artist: Artist 1</p>
+            </div>
+            <span class="play-icon">&#9654;</span>
+        </li>
+        <li class="li_list">
+            <img src="https://source.unsplash.com/collection/190727/1600x1600/" alt="Song 1" class="song-image">
+            <div class="song-details">
+                <p class="song-name">Song 1</p>
+                <p class="artist">Artist: Artist 1</p>
+            </div>
+            <span class="play-icon">&#9654;</span>
+        </li>
+        <li class="li_list">
+            <img src="https://source.unsplash.com/collection/190727/1600x1600/" alt="Song 1" class="song-image">
+            <div class="song-details">
+                <p class="song-name">Song 1</p>
+                <p class="artist">Artist: Artist 1</p>
+            </div>
+            <span class="play-icon">&#9654;</span>
+        </li>
+        <li class="li_list">
+            <img src="https://source.unsplash.com/collection/190727/1600x1600/" alt="Song 1" class="song-image">
+            <div class="song-details">
+                <p class="song-name">Song 1</p>
+                <p class="artist">Artist: Artist 1</p>
+            </div>
+            <span class="play-icon">&#9654;</span>
+        </li>
+        <li class="li_list">
+            <img src="https://source.unsplash.com/collection/190727/1600x1600/" alt="Song 1" class="song-image">
+            <div class="song-details">
+                <p class="song-name">Song 1</p>
+                <p class="artist">Artist: Artist 1</p>
+            </div>
+            <span class="play-icon">&#9654;</span>
+        </li>
+        
+        
+    </ul>
+</body>
+</html>

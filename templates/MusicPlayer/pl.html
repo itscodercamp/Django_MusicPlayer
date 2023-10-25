@@ -1,0 +1,134 @@
+    {% load static %}
+
+    <style>
+        /* Custom CSS for the container */
+        .custom-containers {
+            width: 299px;
+            height: 202px;
+            overflow: hidden;
+        }
+
+        /* Container for the accordion with vertical scroll */
+        .scrollable-containers {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        /* Hide the accordion scrollbars */
+        .accordions {
+            overflow: hidden;
+        }
+        .accordion-items {
+            background-color: rgba(50, 51, 82, 0.328);
+        }
+        .list-group-item {
+            background-color: rgba(50, 51, 82, 0.328);
+            color:#fff;
+        }
+        .accordion-buttons {
+            background-color: rgba(77, 77, 101, 0.328);
+            color:#fff;
+        }
+    </style>
+    <div class="custom-containers mt-1">
+        <div class="scrollable-containers">
+
+
+            <div class="accordion accordions accordion-flush" id="accordionFlushExample">
+                {% if playlists %}
+                    {% for playlist in playlists %}
+                        <!-- Existing playlist -->
+                        <div class="accordion-item accordion-items">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button accordion-buttons collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ playlist.id }}" aria-expanded="false" aria-controls="collapse{{ playlist.id }}"> 
+                                    {{ playlist.Playlist_Title }}
+                                </button>
+                            </h2>
+                            <div id="collapse{{ playlist.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body accordion-body">
+                                  
+                            <ul  class="list-group list-groups list-group-flush">
+                                        {% for song in playlist.Songs.all %}
+                                        <a href="#" class="list_songss" style='text-decoration:none; ' data-audio-url="{{ song.audio.url }}" data-title="{{ song.Song_Title }}" data-artist="{{ song.artists }}" data-cover="{{ song.image.url }}">
+
+                                            <li class="list-group-item list-group-item">{{ song.Song_Title }}</li> 
+
+                                        </a>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                <div class="mx-auto text-center">
+                    <h3 class='mt-4'>You don't have any playlist Create one</h3>
+                    <br>
+                    <a href="{% url 'create_playlist' %}" class="btn rounded shadow text-white " style="background-color: #25256b;" target="_blank">Make Playlist</a>
+                </div>
+                    {% endif %} 
+            </div>
+
+            
+        </div>
+    </div>
+    <script>
+        const cardSlider = document.getElementById("card-slider");
+        const cards = cardSlider.querySelectorAll(".cards");
+        const cardWidth = 85; // Update to your card width in pixels
+        let currentIndex = 0;
+    
+        function scrollToCard(index) {
+            const offset = index * cardWidth;
+            cardSlider.style.transform = `translateX(-${offset}px)`;
+        }
+    
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % cards.length;
+            scrollToCard(currentIndex);
+    
+            if (currentIndex === cards.length - 1) {
+                cardSlider.style.transition = 'transform 0.8s ease';
+                currentIndex = 0;
+                scrollToCard(currentIndex);
+    
+                void cardSlider.offsetWidth;
+    
+                cardSlider.style.transition = 'transform 1s ease';
+                scrollToCard(currentIndex);
+            }
+        }
+    
+        setInterval(nextCard, 5000); // Change card every 5 seconds
+    </script>
+    
+     <script>
+      const songListItem = document.querySelectorAll(".list_songss");
+    
+    // Function to play a song when a list item is clicked
+    function playSongOnClick(event) {
+      event.preventDefault(); // Prevent the anchor from navigating
+    
+      const audioUrl = this.getAttribute("data-audio-url");
+      const title = this.getAttribute("data-title");
+      const artist = this.getAttribute("data-artist");
+      const cover = this.getAttribute("data-cover");
+    
+      // Update the player with the new song details
+      loadSongs({
+        path: audioUrl,
+        musicName: title,
+        artist: artist,
+        cover: cover
+      });
+    
+      // Play the selected song
+      playSong();
+    }
+    
+    // Attach the click event listener to each song list item
+    songListItem.forEach((item) => {
+      item.addEventListener("click", playSongOnClick);
+    });
+    </script>
+    </html>

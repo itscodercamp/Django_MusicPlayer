@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phone Number Verification</h1>
+        <div id="verification-form">
+            <input type="tel" id="phone" placeholder="Enter your phone number">
+            <div id="recaptcha-container"></div>
+            <button id="send-otp">Send OTP</button>
+        </div>
+        <div id="otp-form" style="display: none;">
+            <input type="text" id="otp" placeholder="Enter OTP">
+            <button id="verify-otp">Verify OTP</button>
+        </div>
+        <div id="message"></div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
+       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyB_EaLclKzfrYyf70YBOOo4AbGIFauV7eg",
+    authDomain: "musicplayer-django.firebaseapp.com",
+    projectId: "musicplayer-django",
+    storageBucket: "musicplayer-django.appspot.com",
+    messagingSenderId: "930422992135",
+    appId: "1:930422992135:web:df04eef33bf2e4b763a9a2",
+    measurementId: "G-XLFGT7RBGB"
+  };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const phoneInput = document.getElementById('phone');
+        const otpForm = document.getElementById('otp-form');
+        const otpInput = document.getElementById('otp');
+        const sendOTPButton = document.getElementById('send-otp');
+        const verifyOTPButton = document.getElementById('verify-otp');
+        const messageDiv = document.getElementById('message');
+
+        // Initialize reCAPTCHA
+        let recaptchaVerifier;
+
+        function initializeRecaptcha() {
+            recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'normal',
+                'callback': (response) => {
+                    // reCAPTCHA solved, allow the user to click the "Send OTP" button.
+                    sendOTPButton.removeAttribute('disabled');
+                },
+                'expired-callback': () => {
+                    // reCAPTCHA expired, disable the "Send OTP" button.
+                    sendOTPButton.setAttribute('disabled', 'true');
+                }
+            });
+        }
+
+        sendOTPButton.addEventListener('click', () => {
+            // Reinitialize reCAPTCHA
+            initializeRecaptcha();
+
+            const phoneNumber = phoneInput.value;
+            const phoneNumberFormatted = `+91${phoneNumber}`;
+
+            signInWithPhoneNumber(auth, phoneNumberFormatted, recaptchaVerifier)
+                .then((confirmationResult) => {
+                    otpForm.style.display = 'block';
+                    sendOTPButton.style.display = 'none';
+
+                    verifyOTPButton.addEventListener('click', () => {
+                        const otp = otpInput.value;
+                        confirmationResult.confirm(otp)
+                            .then((userCredential) => {
+                                messageDiv.textContent = 'Phone number verified successfully!';
+                                const user = userCredential.user;
+                                // You can handle the verified user here.
+                            })
+                            .catch((error) => {
+                                messageDiv.textContent = `Error: ${error.message}`;
+                            });
+                    });
+                })
+                .catch((error) => {
+                    messageDiv.textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<style>
+    .card-slider-container {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .card-slider {
+        display: flex;
+        transition: transform 0.8s ease;
+    }
+
+    .cards {
+        flex: 0 0 85px;
+        height: 85px;
+        margin-right: 10px;
+        border:1px solid  rgba(179, 171, 171, 0.224);
+    }
+    .card-img {
+        width: 100%;
+    }
+    
+</style>
+
+
+<div class="card-slider-container">
+    <div class="card-slider" id="card-slider">
+        <!-- Add your cards here -->
+        {% for song in Songs %}
+        <div class="card cards text-bg-dark">
+            <a href="#" class="list_songss" data-audio-url="{{ song.audio.url }}" data-title="{{ song.Song_Title }}" data-artist="{{ song.artists }}" data-cover="{{ song.image.url }}">
+            <img src="{{ song.image.url }}" class="card-img" alt="{{ song.Song_Title }}">
+            <!-- -->
+        </a>
+        </div>
+        {% endfor %}
+        <!-- Add more cards as needed -->
+    </div>
+</div>
+
+<script>
+    const cardSlider = document.getElementById("card-slider");
+    const cards = cardSlider.querySelectorAll(".cards");
+    const cardWidth = 85; // Update to your card width in pixels
+    let currentIndex = 0;
+
+    function scrollToCard(index) {
+        const offset = index * cardWidth;
+        cardSlider.style.transform = `translateX(-${offset}px)`;
+    }
+
+    function nextCard() {
+        currentIndex = (currentIndex + 1) % cards.length;
+        scrollToCard(currentIndex);
+
+        if (currentIndex === cards.length - 1) {
+            cardSlider.style.transition = 'transform 0.8s ease';
+            currentIndex = 0;
+            scrollToCard(currentIndex);
+
+            void cardSlider.offsetWidth;
+
+            cardSlider.style.transition = 'transform 1s ease';
+            scrollToCard(currentIndex);
+        }
+    }
+
+    setInterval(nextCard, 5000); // Change card every 5 seconds
+</script>
+
+ <script>
+  const songListItem = document.querySelectorAll(".list_songss");
+
+// Function to play a song when a list item is clicked
+function playSongOnClick(event) {
+  event.preventDefault(); // Prevent the anchor from navigating
+
+  const audioUrl = this.getAttribute("data-audio-url");
+  const title = this.getAttribute("data-title");
+  const artist = this.getAttribute("data-artist");
+  const cover = this.getAttribute("data-cover");
+
+  // Update the player with the new song details
+  loadSongs({
+    path: audioUrl,
+    musicName: title,
+    artist: artist,
+    cover: cover
+  });
+
+  // Play the selected song
+  playSong();
+}
+
+// Attach the click event listener to each song list item
+songListItem.forEach((item) => {
+  item.addEventListener("click", playSongOnClick);
+});
+</script>

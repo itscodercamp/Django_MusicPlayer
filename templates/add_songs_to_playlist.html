@@ -1,0 +1,97 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Add Songs to Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="row">
+    <h1>Add Songs to {{ playlist.Playlist_Title }}</h1>
+    <ul class="col-6">
+        {% for song in songs %}
+            <li>
+                {{ song.Song_Title }} - {{ song.artists.artist }}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="song_id" value="{{ song.id }}">
+                    <button type="submit">Add to Playlist</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="col-6">this is</div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Songs to Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha384-cD9GDBAM4u46lNtnPJ3vfn4LznyTduIeMk6yJbIl0egGDA5DeqxK5g5F5BydCZDb" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h1>Add Songs to {{ playlist.Playlist_Title }}</h1>
+                <div style="height: 700px; overflow-y: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Song Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in songs %}
+                                <tr>
+                                    <td>{{ song.Song_Title }} - {{ song.artists.artist }}</td>
+                                    <td>
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="song_id" value="{{ song.id }}">
+                                            <button type="submit" class="btn btn-warning">+</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+               
+                
+                
+                <span class="d-flex"><h2>Your Playlists</h2><p class="mt-2 mx-5">{{ username }}</p><a href="{% url 'create_playlist' %}" class="btn mx-3 mt-1" style="height: 40px; color: #ffff; background-color: rgb(64, 190, 176);">Previous </a><a href="{% url 'home' %}" class="btn mx-1 mt-1" style="height: 40px; color: #ffff; background-color: rgb(157, 119, 192);">Home</a></span>
+                
+                <div style="height: 700px; overflow-y: auto;">
+                    {% for playlist in playlists %}
+                    <h3>Songs in {{ playlist.Playlist_Title }}</h3>
+                        <ul class="list-group list-group-flush">
+                            
+                            {% for song in playlist.Songs.all %}
+
+                            <li class="list-group-item">{{ song.Song_Title }}</li>
+
+                            {% endfor %}
+                            
+                        </ul>
+                        {% endfor %}
+                    </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>

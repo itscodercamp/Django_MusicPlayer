@@ -1,0 +1,119 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary">
+    <a class="navbar-brand mx-3" href="#">Admin Panel -- Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <!-- Profile Picture and Username -->
+            <li class="nav-item">
+                <img src="https://source.unsplash.com/40x40/?profile" alt="Admin Profile" class="img-fluid rounded-circle mx-2">
+            </li>
+            <li class="nav-item">
+                <a class="btn text-white">{{ user.username }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="mx-4 btn btn-danger" href="{% url "logout" %}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Dashboard Content -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-primary text-white sidebar ">
+            <hr class="border" style="color:white; ">
+            <!-- Admin Name -->
+            <div class="sidebar-sticky" style="height: 534px;">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+                </h6>
+                <!-- Sidebar List -->
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Songs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Albums</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Artists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white " href="#">Duration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Genre</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 rounded-3 border">
+            <!-- Your content here -->
+
+            <div class="container mt-5 row">
+                <div class="col-5">
+                    <h2 class="mb-3">Upload Songs</h2>
+                    <form class="">
+                        <!-- Title Field -->
+                        <div class="form-group">
+                            <label for="title">Title:</label>
+                            <input type="text" class="form-control opacity-50" id="title" name="title" placeholder="Enter the title" required>
+                        </div>
+            
+                        <!-- Duration Field -->
+                        <div class="form-group">
+                            <label for="duration">Duration:</label>
+                            <input type="number" class="form-control opacity-50" id="duration" name="duration" placeholder="Enter the duration" required>
+                        </div>
+            
+                        <!-- Genre Field -->
+                        <div class="form-group">
+                            <label for="genre">Genre:</label>
+                            <input type="text" class="form-control opacity-50" id="genre" name="genre" placeholder="Enter the genre" required>
+                        </div>
+            
+                        <!-- Album Field -->
+                        <div class="form-group">
+                            <label for="album">Album:</label>
+                            <input type="text" class="form-control opacity-50" id="album" name="album" placeholder="Enter the album" required>
+                        </div>
+            
+                        <!-- Artist Field -->
+                        <div class="form-group">
+                            <label for="artist">Artist:</label>
+                            <input type="text" class="form-control opacity-50" id="artist" name="artist" placeholder="Enter the artist" required>
+                        </div>
+            
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-3">Upload Songs</h2>
+
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control opacity-50" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+</div>
+
+<nav class="navbar sticky-bottom navbar-light bg-primary">
+    <p class="mx-auto mt-1 text-white ">All Right reserved</p>
+</nav>

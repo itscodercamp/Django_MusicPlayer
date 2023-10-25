@@ -1,0 +1,414 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sasta Songs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/cde1ffb765.js" crossorigin="anonymous"></script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+/* body {
+  background: linear-gradient(to top right, #87de8d, #68bfe451);
+  background-repeat: no-repeat;
+} */
+
+body {
+    /* font-family: 'Montserrat', sans-serif;
+    font-size: 22px; */
+    backdrop-filter: blur(5px); /* Adjust the blur amount as needed */
+            /* background-image: url('https://source.unsplash.com/1200x650/?music');
+            background-size: cover;
+            background-repeat: no-repeat; */
+        /* background-color: black; */
+        } 
+
+        /* Make the main content container transparent */
+        .container {
+            background-color: rgba(255, 255, 255, 0.516); /* Adjust the alpha (opacity) value as needed */
+            border-radius: 10px; /* Add rounded corners to the container */
+            padding: 20px; /* Add padding to the container */
+        }
+
+        /* Define the size for the container */
+        .container-box {
+            /* width: 255px; */
+            height: 490px;
+            overflow: hidden;
+            /* border: 1px solid #ccc;
+            border-radius: 5px;
+            position: relative; */
+        }
+
+        /* Define the size for the list and enable scrolling */
+        .scrollable-list {
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        /* Add some padding for the list items */
+        .list-item {
+            padding: 10px;
+            /* border-bottom: 1px solid #ddd; */
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Style the search bar */
+        .search-bar {
+            /* background-color: #f5f5f5; */
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        /* Style the custom scrollbar for WebKit browsers (Chrome, Safari) */
+        .scrollable-list::-webkit-scrollbar {
+            width: 10px;/* Adjust the scrollbar width as needed */
+        }
+        
+        .scrollable-list::-webkit-scrollbar-thumb {
+            background-color: #25256b; /* Customize the scrollbar thumb color */
+            height: 5px;
+        }
+
+        .scrollable-list::-webkit-scrollbar-track {
+            background-color: #f5f5f5; /* Customize the scrollbar track color */
+        }
+    </style>
+     <style>
+        /* Style for the song list */
+        .ul_list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .li_list {
+            text-decoration: none;
+            margin: 10px 0;
+            border-radius: 10px;
+            background-color: #f9f9f937;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            transition: background-color 0.5s;
+            height: 70px;
+            width: 300px;
+        }
+
+        .li_list:hover {
+            background-color: #f2f2f2ba;
+        }
+
+        .song-image {
+            height: 50px;
+            width: 50px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+
+        .song-details {
+            flex: 1;
+            width: 0; /* Add this line */
+            overflow: hidden;
+        }
+
+        
+        .play-icon {
+            font-size: 17px;
+            color: #666;
+            cursor: pointer;
+        }
+        .artist{
+            color: #333;
+            font-size: small;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .song-name{
+            padding-top: 15px;
+            font-size: 1.2em;
+            color: #222;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: medium;
+        }
+    </style>
+    <style>
+        /* Define a CSS rule to change the background color of accordion items */
+        .custom-accordion-item {
+          background-color:  #5f5e5e37; /* Change this color to your desired background color */
+        }
+      </style>
+</head>
+  <body>
+    <!-- <style>
+        #images {
+          display: none;
+          background-color:black;
+          height: 800px;
+          padding-top: 100px;
+        }
+        .imagess{
+            border-radius: 15px;
+            height: 500px;
+            width: 500px;
+        }
+      </style> 
+       <div class='container-fluid mx-auto text-center' id="images">
+        <h2 class="text-white">You'r stuck Somewere Let's Enjoy With Dance </h2>
+        <img src="{% static 'cat.gif' %}" class="imagess" alt="Image" width="400" height="300">
+      </div> -->
+    
+      {% include "MusicPlayer/model.html" %}
+
+    <nav class="navbar navbar-expand-lg " style="background-color: rgba(179, 171, 171, 0.224);">
+        <div class="container-fluid">
+            
+          <a class="navbar-brand fs-3" style="color: #f1f1f1;" href="#">Sasta Songs</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                
+
+                {% if user.is_authenticated %}
+                {% if user.is_staff and not user.is_superuser %}
+                
+                <span class="d-flex">
+                    <a class="nav-link text-white" href="{% url 'create_playlist' %}" target="_blank">My Playlist</a>
+                    {% else %}
+                <span class="d-flex">
+                    
+                    <a class="nav-link text-white" href="{% url 'create_playlist' %}" target="_blank">My Playlist</a>
+
+                {% endif %}
+            {% else %}
+                {% if user.is_staff and not user.is_superuser %}
+                {% else %}
+                
+                {% endif %}
+            {% endif %}
+
+
+              <!-- <a class="nav-link text-white" href="{% url 'create_playlist' %}" target="_blank">My Playlist</a> -->
+            </div>
+          </div>
+
+
+          {% if user.is_authenticated %}
+    {% if user.is_staff and not user.is_superuser %}
+    
+    <span class="d-flex">
+        <img src="https://source.unsplash.com/40x40/?profile" alt="Admin Profile" class="img-fluid rounded-circle mx-2">
+        <a class="btn text-white">{{ user.username }}</a><a class="border px-3 rounded-3 btn btn-danger mx-4" href="{% url 'logouts' %}">logout</a></span>
+    {% else %}
+    <span class="d-flex">
+        
+        <img src="https://source.unsplash.com/40x40/?profile" alt="Admin Profile" class="img-fluid rounded-circle mx-2">
+        <a class="btn text-white">{{ user.username }}</a><a class="border px-3 rounded-3 btn btn-danger mx-4" href="{% url 'logouts' %}">logout</a></span>
+        <!-- User is not allowed to log out -->
+    {% endif %}
+{% else %}
+    {% if user.is_staff and not user.is_superuser %}
+    <span class="d-flex"><a class="border px-3 rounded-3 btn btn-success mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">Admin login</a></span>
+    {% else %}
+    <span class="d-flex">
+        <!-- Welcome : 
+        <a class="btn text-white">{{ user.username }}</a> -->
+        <a class="btn  px-3 rounded shdow text-white text-cente mx-4"  style="background-color: #25256b;" href="{% url 'login' %}" target="_blank">login</a></span>
+    <!-- <a href="#" class="btn mx-auto rounded shdow text-white text-center" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #25256b;">Login </a></p> -->
+
+    {% endif %}
+{% endif %}
+
+
+
+          {% if user.is_authenticated %}
+          {% if user.is_staff %}
+        {% endif %}
+        {% else %}
+{% endif %}
+        </div>
+      </nav>
+
+
+    <div class="container rounded-4 shadow-lg mt-5 mb-4" style="height: 550px; background-color: rgba(179, 171, 171, 0.224);">
+
+<div class="row ">
+
+    <div class="col-4  card rounded-3 mt-4 mx-auto container-box" style="background-color: rgba(50, 51, 82, 0.328); width: 350px;" >
+    <h5 class="pt-2 text-white">All Songs</h5>
+    <div class="search-bar" style="display: flex; align-items: center; position: relative;">
+        <i class="fa-solid fa-magnifying-glass " style="color: #ffffff; position: absolute; top: 50%; left: 10px; margin-left: 10px; transform: translateY(-50%);"></i>
+        <input type="text" class="form-control text-white" style="background-color: #828388; color: white !important; padding-left: 30px;" id="searchInput" placeholder="Search..." onkeyup="filterList()">
+    </div>
+    
+        <div class="scrollable-list ">
+            <!-- Movie list items -->
+            <ul class="ul_list">
+            {% for song in Songs %}
+            <a href="#" class="li_list list_songs" data-audio-url="{{ song.audio.url }}" data-title="{{ song.Song_Title }}" data-artist="{{ song.artists }}" data-cover="{{ song.image.url }}">
+                <img src="{{song.image.url}}" alt="{{song.Song_Title}}" class="song-image">
+                <div class="song-details">
+                    <p class="song-name">{{song.Song_Title}}</p>
+                    <p class="artist">{{song.artists}}</p>
+                </div>
+                <span class="play-icon">&#9654;</span>
+                <hr>
+            </a>
+  {% endfor %}
+  </ul>
+        </div>
+
+    </div>
+   
+    <div class="col-8 rounded-5 mt-4 mx-auto" style="height: 490px;">
+    <div class="row  rounded mx-auto mt-2" style="height: 471px;">
+
+        <div class="row">
+            <div class="col-6">
+                
+                <!-- <div class="col-12 rounded card" style="height: 190px; border-color:rgba(50, 51, 82, 0.328) ; background-color: rgba(50, 51, 82, 0.328);">
+                    <h5 class=" text-white" style="margin-top: 5px; margin-left: 5px;">My Playlist</h5>
+                <div class="container" style="background-color: rgba(88, 88, 134, 0.3); height: 190px;">
+                    <p class="text-center mx-auto text-white">Please Login to Access Playlist<br><br>
+                    <a href="#" class="btn mx-auto rounded shdow text-white text-center" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #25256b;">Login </a></p>
+                </div>
+                </div> -->
+                
+
+                <div class="col-12 rounded card" style="height: 250px; border-color: rgba(50, 51, 82, 0.328); background-color: rgba(50, 51, 82, 0.328);">
+                    <h5 class="text-white" style="margin-top: 5px; margin-left: 5px;">My Playlist</h5>
+                    <div class="container-fluid" style="background-color: rgba(88, 88, 134, 0.3); height: 212px;">
+                        {% if user.is_authenticated %}
+
+                            <!-- {% if playlists %}
+                                {% for playlist in playlists %}
+                                    
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ playlist.id }}" aria-expanded="false" aria-controls="collapse{{ playlist.id }}"> 
+                                                {{ playlist.Playlist_Title }}
+                                            </button>
+                                        </h2>
+                                        
+                                                <h3>Songs in {{ playlist.Playlist_Title }}</h3>
+                                                                                            
+                                                <ul  class="list-group list-group-flush custom-accordion-item">
+                                                    {% for song in playlist.Songs.all %}
+                                                        <li class="list-group-item custom-accordion-item">{{ song.Song_Title }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                           
+                                {% endfor %}
+                            {% else %}
+                                <h3>You don't have any playlist Create one</h3>
+                            {% endif %} -->
+                           
+                            <!-- {% if playlists %}
+                            {% for playlist in playlists %}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    {{ playlist.Playlist_Title }}
+  </button>
+  
+  {% endfor %}
+  {% else %}
+  <h3>You don't have any playlist Create one</h3>
+  {% endif %}  -->
+  
+  {% include "MusicPlayer/pl.html" %}    
+
+
+
+                        {% else %}
+                            <!-- Content to display when the user is not logged in -->
+                            <p class="text-center mx-auto mt-5 text-white">Please Login to Access Playlist<br><br>
+                                <a href="{% url 'login' %}" class="btn mx-auto rounded shadow text-white text-center" style="background-color: #25256b;" target="_blank">Login</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                
+
+                <div class="col-12  mt-1 rounded card" style="height: 100px; background-color: rgba(50, 51, 82, 0.328);">
+                <div class="row ">
+                    <div class="col-6 " >
+                        <img src="https://source.unsplash.com/collection/190727/1600x1600/" class="card-img " id="now-playing-cover" style="height: 90px; width: 90px; margin-top: 4px; margin-left: 4px;" alt="...">
+                    </div>
+                    <div class="col-6 text-white" >
+                          <h5 id="now-playing-title"></h5>
+                          <!-- <hr> -->
+                            <p class="" id="now-playing-artist"></p>
+                            
+
+                    </div>
+                </div>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="col-12 " style="height: 355px;"> 
+                {% include "MusicPlayer/player.html" %}    
+                </div>
+            </div>
+    </div>
+
+        <div class="col-12 rounded-3 mt-1" style="height: 125px; background-color: rgba(50, 51, 82, 0.328);">
+            <h6 class="text-white mt-1">Top Trending Song's</h6>
+            {% include "MusicPlayer/sld.html" %}
+         </div>
+    </div>
+    </div>
+
+</div>
+
+    </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- <script>
+        window.onload = function () {
+          // Display the image for 5 seconds
+          document.getElementById('images').style.display = 'block';
+      
+          setTimeout(function () {
+            // Hide the image after 5 seconds
+            document.getElementById('images').style.display = 'none';
+      
+            // Redirect to the actual homepage
+            window.location.href = ' ';
+          }, 10000); // 5000 milliseconds = 10 seconds
+        };
+      </script> -->
+    <script> 
+        function filterList() {
+            var input, filter, list, listItem, text, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            list = document.querySelector(".scrollable-list");
+            listItem = list.getElementsByClassName("li_list");
+
+            for (i = 0; i < listItem.length; i++) {
+                text = listItem[i].textContent || listItem[i].innerText;
+                if (text.toUpperCase().indexOf(filter) > -1) {
+                    listItem[i].style.display = "";
+                } else {
+                    listItem[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+<!-- <script>
+  window.onload = function()  {
+      alert("Abe sale");
+    };
+    </script> -->
+    
+</body>
+</html>

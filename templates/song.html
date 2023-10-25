@@ -1,0 +1,70 @@
+{% comment %} <div class="d-flex position-relative">
+    <img src="..." class="flex-shrink-0 me-3" alt="...">
+    <div>
+      <h5 class="mt-0">Custom component with stretched link</h5>
+      <p>This is some placeholder content for the custom component. It is intended to mimic what some real-world content would look like, and we're using it here to give the component a bit of body and size.</p>
+      <a href="#" class="stretched-link">Go somewhere</a>
+    </div>
+  </div>
+ {% endcomment %}
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music App - Song List</title>
+    <!-- Add Bootstrap CSS link here -->
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Songs List</h2>
+                <ul>
+                    {% for song in songs %}
+                        <li>
+                            <a href="/get_song_details/{{ song.slug }}" class="song-link" data-slug="{{ song.slug }}">
+                                {{ song.Song_Title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>Song Details</h2>
+                <div id="song-details">
+                    <!-- Song details will be loaded here when a song is clicked -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Bootstrap JS link here, along with jQuery if needed -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.song-link').on('click', function (e) {
+                e.preventDefault();
+                var slug = $(this).data('slug');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_song_details/' + slug + '/',
+                    success: function (data) {
+                        var songDetails = `
+                            <h2>${data.Song_Title}</h2>
+                            <img src="${data.image}" alt="${data.Song_Title}">
+                            <p>Duration: ${data.duration}</p>
+                            <p>${data.other_details}</p> <!-- Display other song details here -->
+                        `;
+
+                        $('#song-details').html(songDetails);
+                    },
+                    error: function () {
+                        alert('Song details not found.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

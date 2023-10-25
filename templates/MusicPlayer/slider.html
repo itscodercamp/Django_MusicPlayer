@@ -1,0 +1,145 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Card Slider</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <style>
+        .card-slider-container {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .card-slider {
+            display: flex;
+            transition: transform 0.8s ease;
+        }
+
+        .cards {
+            flex: 0 0 150px;
+            height: 80px;
+            width: 80px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+        <div class="card-slider-container">
+            <div class="card-slider" id="card-slider">
+                <!-- Add your cards here -->
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 1</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 2</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 3</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 4</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 5</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 6</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 7</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 8</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 9</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 10</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 11</h5>
+                    </div>
+                </div>
+                <div class="card cards">
+                    <img src="https://source.unsplash.com/collection/190727/1600x900" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 12</h5>
+                    </div>
+                </div>
+                <!-- Add more cards as needed -->
+            </div>
+        </div>
+
+    <script>
+        const cardSlider = document.getElementById("card-slider");
+        const cards = cardSlider.querySelectorAll(".cards");
+        const cardWidth = 165; // 150px card width + 15px margin
+        let currentIndex = 0;
+
+        function scrollToCard(index) {
+            const offset = index * cardWidth;
+            cardSlider.style.transform = `translateX(-${offset}px)`;
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % cards.length;
+            scrollToCard(currentIndex);
+
+            // Check if the last card is displayed
+            if (currentIndex === cards.length -6) {
+                // Reset to the first card position without animation
+                cardSlider.style.transition = 'transform 0.8s ease';
+                currentIndex = 0;
+                scrollToCard(currentIndex);
+
+                // Force a reflow to apply the reset transition
+                void cardSlider.offsetWidth;
+
+                // Restore transition and apply it smoothly
+                cardSlider.style.transition = 'transform 0.8s ease';
+                scrollToCard(currentIndex);
+            }
+        }
+
+        setInterval(nextCard, 3000); // Change card every 2 seconds
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>
